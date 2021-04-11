@@ -55,6 +55,11 @@ namespace v2rayN.Forms
             {
                 statistics = new StatisticsHandler(config, UpdateStatisticsHandler);
             }
+
+            UpdateSubscriptionProcess();
+            StartAutoUpdateSubscribeTimer();
+
+
         }
 
         private void MainForm_VisibleChanged(object sender, EventArgs e)
@@ -1407,6 +1412,20 @@ namespace v2rayN.Forms
                 }
             };
             MainFormHandler.Instance.UpdateSubscriptionProcess(config, _updateUI);            
+        }
+
+        private void StartAutoUpdateSubscribeTimer()
+        {
+            if (timer == null)
+            {
+                timer = new System.Timers.Timer(3600 * 1000);
+                timer.AutoReset = true;
+                timer.Enabled = true;
+                timer.Elapsed += (source, e) =>
+                {
+                    UpdateSubscriptionProcess();
+                };
+            };
         }
 
         private void tsbQRCodeSwitch_CheckedChanged(object sender, EventArgs e)
